@@ -33,7 +33,7 @@ const AGENTS = [
 
 const ROADMAP = [
   "Support more manifest types (Cargo.toml, go.mod, pyproject.toml)",
-  "Iterate better prompts for agents",
+  "Auto-select docs version based on repo (e.g. Next.js app/pages router)",
   "Use Context7 TS SDK for speed and token reduction",
 ];
 
@@ -46,12 +46,22 @@ export default function Home() {
           <h1 className="text-xl mb-2">
             One line away from Claude Code having reliable docs
           </h1>
-          <p className="text-muted-foreground mb-6">
-            Auto-configures library docs agents for Claude Code
+          <p className="text-muted-foreground mb-4">
+            Your dependencies → specialized doc agents in seconds
           </p>
-          <div className="mb-4">
+          <div className="mb-2">
             <CommandBlock command="npx claude-docs" />
           </div>
+          <p className="text-xs text-muted-foreground mb-4">
+            requires{" "}
+            <a
+              href="https://docs.anthropic.com/en/docs/claude-code"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              claude code cli
+            </a>
+          </p>
           <a
             href={GITHUB_URL}
             target="_blank"
@@ -93,9 +103,9 @@ export default function Home() {
             <li className="flex gap-3">
               <span className="text-muted-foreground select-none shrink-0">3.</span>
               <div>
-                <code className="bg-secondary px-1 whitespace-nowrap">@research-&#123;library&#125;</code>
+                <code className="bg-secondary px-1 whitespace-nowrap">@research-react</code>
                 <span className="text-muted-foreground ml-2">
-                  — Query docs directly, or use{" "}
+                  — Call agents directly, or use{" "}
                   <code className="bg-secondary px-1 whitespace-nowrap">/research</code>
                   {" "}to auto-route
                 </span>
@@ -104,44 +114,41 @@ export default function Home() {
           </ol>
         </section>
 
-        {/* Why This Approach */}
+        {/* /research Flowchart */}
         <section className="mb-16">
           <h2 className="text-lg mb-6 border-b border-border pb-2">
-            Why Pre-Generated Agents
+            How /research Routes
           </h2>
-          <div className="text-sm space-y-4 text-muted-foreground">
-            <p>
-              <code className="bg-secondary px-1 text-foreground">/sync-docs</code> scans your{" "}
-              <code className="bg-secondary px-1 text-foreground">package.json</code> or{" "}
-              <code className="bg-secondary px-1 text-foreground">requirements.txt</code>, validates each library against Context7,
-              and generates dedicated <code className="bg-secondary px-1 text-foreground">@research-&#123;library&#125;</code> agents
-              with the correct Context7 library IDs baked in. It also creates a personalized{" "}
-              <code className="bg-secondary px-1 text-foreground">/research</code> command that knows all your available agents and routes queries automatically.
-            </p>
-            <p>
-              <strong className="text-foreground">Why not query docs on-the-fly?</strong>
-            </p>
-            <ul className="space-y-2 ml-4">
-              <li>
-                <span className="text-foreground">Save context</span> — Agent prompts are loaded only when invoked, not on every request
-              </li>
-              <li>
-                <span className="text-foreground">Fewer MCP calls</span> — Library IDs are resolved once at sync time, not every query
-              </li>
-              <li>
-                <span className="text-foreground">Better prompts</span> — Each agent has library-specific instructions and topic hints
-              </li>
-              <li>
-                <span className="text-foreground">Predictable</span> — You can inspect and edit the generated agents in <code className="bg-secondary px-1">.claude/agents/</code>
-              </li>
-            </ul>
-          </div>
+          <pre className="text-xs text-muted-foreground leading-relaxed overflow-x-auto">
+{`/research "how do I validate webhooks in stripe?"
+                    │
+                    ▼
+       ┌────────────────────────────┐
+       │     /research command      │
+       │    (knows your agents)     │
+       └────────────────────────────┘
+                    │
+                    ▼
+       ┌────────────────────────────┐
+       │     detects: stripe        │
+       │  routes → @research-stripe │
+       └────────────────────────────┘
+                    │
+                    ▼
+       ┌────────────────────────────┐
+       │     @research-stripe       │
+       │   queries Context7 MCP     │
+       └────────────────────────────┘
+                    │
+                    ▼
+            docs-backed answer`}
+          </pre>
         </section>
 
         {/* Base Agents */}
         <section className="mb-16">
           <h2 className="text-lg mb-6 border-b border-border pb-2">
-            Base Agents
+            Base Agents for Efficient Research
           </h2>
           <div className="border border-border">
             <table className="w-full text-sm">
@@ -181,15 +188,52 @@ export default function Home() {
           </p>
         </section>
 
+        {/* Why This Approach */}
+        <section className="mb-16">
+          <h2 className="text-lg mb-6 border-b border-border pb-2">
+            Why Pre-Generated Agents
+          </h2>
+          <div className="text-sm space-y-4 text-muted-foreground">
+            <p>
+              <code className="bg-secondary px-1 text-foreground">/sync-docs</code> scans your{" "}
+              <code className="bg-secondary px-1 text-foreground">package.json</code> or{" "}
+              <code className="bg-secondary px-1 text-foreground">requirements.txt</code>, validates each library against Context7,
+              and generates dedicated <code className="bg-secondary px-1 text-foreground">@research-&#123;library&#125;</code> agents
+              with the correct Context7 library IDs baked in. It also creates a personalized{" "}
+              <code className="bg-secondary px-1 text-foreground">/research</code> command that knows all your available agents and routes queries automatically.
+            </p>
+            <p>
+              <strong className="text-foreground">Why not query docs on-the-fly?</strong>
+            </p>
+            <ul className="space-y-2 ml-4">
+              <li>
+                <span className="text-foreground">Save context</span> — Agent prompts are loaded only when invoked, not on every request
+              </li>
+              <li>
+                <span className="text-foreground">Fewer MCP calls</span> — Library IDs are resolved once at sync time, not every query
+              </li>
+              <li>
+                <span className="text-foreground">Better prompts</span> — Each agent has library-specific instructions and topic hints
+              </li>
+              <li>
+                <span className="text-foreground">Predictable</span> — You can inspect and edit the generated agents in <code className="bg-secondary px-1">.claude/agents/</code>
+              </li>
+            </ul>
+          </div>
+        </section>
+
         {/* Why Context7 */}
         <section className="mb-16">
           <h2 className="text-lg mb-6 border-b border-border pb-2">
             Why Context7
           </h2>
+          <p className="text-sm text-muted-foreground leading-relaxed mb-3">
+            Context7 indexes up-to-date dev-documentation for thousands of libraries.
+          </p>
           <p className="text-sm text-muted-foreground leading-relaxed">
-            We use Context7 because it works. Instead of building and maintaining our own
-            documentation scraper, we chose a reliable provider that already indexes library
-            docs. Less code to maintain, more time to improve the actual agents.
+            We use it because it works. Instead of building and maintaining our own
+            documentation scraper, we chose a reliable provider. Less code to maintain,
+            more time to improve the actual agents.
           </p>
           <p className="text-sm mt-3">
             <a
