@@ -1,6 +1,19 @@
 import { CommandBlock } from "@/components/custom/command-block";
 import { ExternalLink } from "lucide-react";
 
+async function getNpmVersion(): Promise<string> {
+  try {
+    const res = await fetch("https://registry.npmjs.org/claude-docs/latest", {
+      next: { revalidate: 3600 }, // Cache for 1 hour
+    });
+    if (!res.ok) return "1.0.0";
+    const data = await res.json();
+    return data.version || "1.0.0";
+  } catch {
+    return "1.0.0";
+  }
+}
+
 const GITHUB_REPO = "ii-vo/claude-docs";
 const GITHUB_URL = `https://github.com/${GITHUB_REPO}`;
 const NPM_URL = "https://www.npmjs.com/package/claude-docs";
@@ -37,7 +50,9 @@ const ROADMAP = [
   "Use Context7 TS SDK for speed and token reduction",
 ];
 
-export default function Home() {
+export default async function Home() {
+  const version = await getNpmVersion();
+
   return (
     <div className="min-h-screen">
       <main className="mx-auto max-w-2xl px-6 py-16">
@@ -119,30 +134,24 @@ export default function Home() {
           <h2 className="text-lg mb-6 border-b border-border pb-2">
             How /research Routes
           </h2>
-          <pre className="text-xs text-muted-foreground leading-relaxed overflow-x-auto">
-{`/research "how do I validate webhooks in stripe?"
-                    │
-                    ▼
-       ┌────────────────────────────┐
-       │     /research command      │
-       │    (knows your agents)     │
-       └────────────────────────────┘
-                    │
-                    ▼
-       ┌────────────────────────────┐
-       │     detects: stripe        │
-       │  routes → @research-stripe │
-       └────────────────────────────┘
-                    │
-                    ▼
-       ┌────────────────────────────┐
-       │     @research-stripe       │
-       │   queries Context7 MCP     │
-       └────────────────────────────┘
-                    │
-                    ▼
-            docs-backed answer`}
-          </pre>
+          <div className="text-sm text-muted-foreground space-y-3">
+            <p>
+              <code className="bg-secondary px-1 text-foreground">/research</code>{" "}
+              <span className="text-muted-foreground">&quot;how do I validate webhooks?&quot;</span>
+            </p>
+            <p className="pl-4">
+              ↓ detects <code className="bg-secondary px-1">stripe</code> in query
+            </p>
+            <p className="pl-4">
+              ↓ routes to <code className="bg-secondary px-1 text-foreground">@research-stripe</code>
+            </p>
+            <p className="pl-4">
+              ↓ agent queries Context7 MCP
+            </p>
+            <p className="pl-4">
+              ↓ <span className="text-foreground">docs-backed answer</span>
+            </p>
+          </div>
         </section>
 
         {/* Base Agents */}
@@ -292,6 +301,7 @@ export default function Home() {
             >
               npm
             </a>
+            <span>v{version}</span>
             <span>mit license</span>
             <a
               href={LINKEDIN_URL}
