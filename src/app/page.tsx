@@ -120,37 +120,25 @@ export default async function Home() {
               <div>
                 <code className="bg-secondary px-1 whitespace-nowrap">@research-react</code>
                 <span className="text-muted-foreground ml-2">
-                  — Call agents directly, or use{" "}
-                  <code className="bg-secondary px-1 whitespace-nowrap">/research</code>
-                  {" "}to auto-route
+                  — Call agents directly
                 </span>
               </div>
             </li>
           </ol>
-        </section>
 
-        {/* /research Flowchart */}
-        <section className="mb-16">
-          <h2 className="text-lg mb-6 border-b border-border pb-2">
-            How /research Routes
-          </h2>
-          <div className="text-sm text-muted-foreground space-y-3">
-            <p>
-              <code className="bg-secondary px-1 text-foreground">/research</code>{" "}
-              <span className="text-muted-foreground">&quot;how do I validate webhooks?&quot;</span>
+          {/* /research integrated */}
+          <div className="mt-6 pt-6 border-t border-border text-sm">
+            <p className="text-muted-foreground mb-3">
+              Or use <code className="bg-secondary px-1 text-foreground">/research</code> to auto-route:
             </p>
-            <p className="pl-4">
-              ↓ detects <code className="bg-secondary px-1">stripe</code> in query
-            </p>
-            <p className="pl-4">
-              ↓ routes to <code className="bg-secondary px-1 text-foreground">@research-stripe</code>
-            </p>
-            <p className="pl-4">
-              ↓ agent queries Context7 MCP
-            </p>
-            <p className="pl-4">
-              ↓ <span className="text-foreground">docs-backed answer</span>
-            </p>
+            <div className="text-muted-foreground space-y-2 pl-4">
+              <p>
+                <code className="bg-secondary px-1 text-foreground">/research</code>{" "}
+                <span>&quot;how do I validate webhooks?&quot;</span>
+              </p>
+              <p>↓ detects <code className="bg-secondary px-1">stripe</code> → routes to <code className="bg-secondary px-1 text-foreground">@research-stripe</code></p>
+              <p>↓ queries Context7 → <span className="text-foreground">docs-backed answer</span></p>
+            </div>
           </div>
         </section>
 
