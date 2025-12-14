@@ -49,13 +49,52 @@ const ROADMAP = [
   "Support more manifest types (Cargo.toml, go.mod, pyproject.toml)",
   "Auto-select docs version based on repo (e.g. Next.js app/pages router)",
   "Use Context7 TS SDK for speed and token reduction",
+  "Modify CLAUDE.md to include research agents for automatic invocation on general questions",
 ];
 
 export default async function Home() {
   const version = await getNpmVersion();
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "claude-docs",
+    applicationCategory: "DeveloperApplication",
+    applicationSubCategory: "CLI Tool",
+    operatingSystem: "macOS, Windows, Linux",
+    description:
+      "Give Claude Code access to up-to-date library documentation via MCP. Scans your dependencies, generates specialized doc agents. One command setup.",
+    url: "https://claude-docs.com",
+    author: {
+      "@type": "Person",
+      name: "ii-vo",
+      url: "https://www.linkedin.com/in/iivo/",
+    },
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+      availability: "https://schema.org/InStock",
+    },
+    softwareVersion: version,
+    downloadUrl: NPM_URL,
+    installUrl: NPM_URL,
+    codeRepository: GITHUB_URL,
+    license: "https://opensource.org/licenses/MIT",
+    programmingLanguage: ["TypeScript", "JavaScript"],
+    keywords:
+      "Claude Code, MCP, Model Context Protocol, Context7, AI coding assistant, documentation agents",
+    isAccessibleForFree: true,
+  };
+
   return (
     <div className="min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
       <main className="mx-auto max-w-2xl px-6 py-16">
         {/* Hero */}
         <section className="mb-16">
