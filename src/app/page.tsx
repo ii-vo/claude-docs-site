@@ -95,7 +95,9 @@ export default function Home() {
               <div>
                 <code className="bg-secondary px-1 whitespace-nowrap">@research-&#123;library&#125;</code>
                 <span className="text-muted-foreground ml-2">
-                  — Query docs directly in Claude Code
+                  — Query docs directly, or use{" "}
+                  <code className="bg-secondary px-1 whitespace-nowrap">/research</code>
+                  {" "}to auto-route
                 </span>
               </div>
             </li>
@@ -113,7 +115,8 @@ export default function Home() {
               <code className="bg-secondary px-1 text-foreground">package.json</code> or{" "}
               <code className="bg-secondary px-1 text-foreground">requirements.txt</code>, validates each library against Context7,
               and generates dedicated <code className="bg-secondary px-1 text-foreground">@research-&#123;library&#125;</code> agents
-              with the correct Context7 library IDs baked in.
+              with the correct Context7 library IDs baked in. It also creates a personalized{" "}
+              <code className="bg-secondary px-1 text-foreground">/research</code> command that knows all your available agents and routes queries automatically.
             </p>
             <p>
               <strong className="text-foreground">Why not query docs on-the-fly?</strong>
