@@ -1,5 +1,6 @@
 import { CommandBlock } from "@/components/custom/command-block";
 import { ExternalLink } from "lucide-react";
+import Image from "next/image";
 
 async function getNpmVersion(): Promise<string> {
   try {
@@ -83,10 +84,12 @@ export default async function Home() {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground no-underline"
           >
-            <img
+            <Image
               src={`https://img.shields.io/github/stars/${GITHUB_REPO}?style=flat&label=GitHub&color=1a1a1a`}
               alt="GitHub stars"
-              className="h-5"
+              width={80}
+              height={20}
+              unoptimized
             />
           </a>
         </section>
